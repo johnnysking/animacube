@@ -1,81 +1,76 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta charset="UTF-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="stylesheet" type="text/css" href="style.css" /> 
-      <title>AnImAcUbe</title>
-      
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>AnImAcUbe</title>
   </head>
-  <body style="background-color: black;">
-      <div class="scene">
-          <div class="cube">
-              <div class="face front"></div>
-              <div class="face1 back"></div>
-              <div class="face2 right"></div>
-              <div class="face3 left"></div>
-              <div class="face4 top"></div>
-              <div class="face5 bottom"></div>
-          </div>
+  <body style="background-color: black">
+    <div class="scene">
+      <div class="cube">
+        <div class="face front"></div>
+        <div class="face1 back"></div>
+        <div class="face2 right"></div>
+        <div class="face3 left"></div>
+        <div class="face4 top"></div>
+        <div class="face5 bottom"></div>
       </div>
+    </div>
 
-      <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const cube = document.querySelector('.cube');
-    let isAnimationRunning = true;
-    let speedFactor = 1;
-    let targetSpeedFactor = speedFactor;
-    let start = null;
-    let progress = 0;
-    const lerpRate = 0.05; // Adjusts the speed of interpolation. Lower values make the transition smoother but slower.
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const cube = document.querySelector(".cube");
+        let isAnimationRunning = true;
+        let speedFactor = 1;
+        let targetSpeedFactor = speedFactor;
+        let start = null;
+        let progress = 0;
+        const lerpRate = 0.05; // Adjusts the speed of interpolation. Lower values make the transition smoother but slower.
 
-    document.addEventListener('click', toggleAnimation);
-    document.addEventListener('wheel', handleMouseWheel);
+        document.addEventListener("click", toggleAnimation);
+        document.addEventListener("wheel", handleMouseWheel);
 
-    function step(timestamp) {
-        if (!isAnimationRunning) {
+        function step(timestamp) {
+          if (!isAnimationRunning) {
             return;
+          }
+
+          speedFactor += (targetSpeedFactor - speedFactor) * lerpRate;
+
+          if (!start) start = timestamp;
+          let elapsed = timestamp - start;
+
+          progress = (elapsed / ((5 / speedFactor) * 1000)) % 1;
+
+          let rotationDegrees = progress * 360;
+
+          cube.style.transform = `rotateX(${rotationDegrees}deg) rotateY(${rotationDegrees}deg)`;
+
+          if (isAnimationRunning) requestAnimationFrame(step);
         }
 
-        speedFactor += (targetSpeedFactor - speedFactor) * lerpRate;
+        requestAnimationFrame(step);
 
-        if (!start) start = timestamp;
-        let elapsed = timestamp - start;
-
-        progress = (elapsed / ((5 / speedFactor) * 1000)) % 1;
-
-        let rotationDegrees = progress * 360;
-
-        cube.style.transform = `rotateX(${rotationDegrees}deg) rotateY(${rotationDegrees}deg)`;
-
-        if (isAnimationRunning) requestAnimationFrame(step);
-    }
-
-    requestAnimationFrame(step);
-
-    function toggleAnimation() {
-        isAnimationRunning = !isAnimationRunning;
-        if (isAnimationRunning) {
-            start = null; 
+        function toggleAnimation() {
+          isAnimationRunning = !isAnimationRunning;
+          if (isAnimationRunning) {
+            start = null;
             requestAnimationFrame(step);
+          }
         }
-    }
 
-    function handleMouseWheel(event) {
-        const delta = Math.sign(event.deltaY);
-        let scrollSpeed = 0.05; 
-        if (delta > 0) {
-            targetSpeedFactor += scrollSpeed; 
-        } else {
+        function handleMouseWheel(event) {
+          const delta = Math.sign(event.deltaY);
+          let scrollSpeed = 0.05;
+          if (delta > 0) {
+            targetSpeedFactor += scrollSpeed;
+          } else {
             targetSpeedFactor = Math.max(1, targetSpeedFactor - scrollSpeed);
+          }
         }
-    }
-});
-
-
-
-
-      </script>
+      });
+    </script>
   </body>
 </html>
