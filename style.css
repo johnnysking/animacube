@@ -20,7 +20,6 @@ html {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  animation: spin 5s infinite linear;
 }
 
 .face {
@@ -101,11 +100,3 @@ html {
   transform: rotateX(-90deg) translateZ(100px);
 }
 
-@keyframes spin {
-  0% {
-    transform: rotateX(0) rotateY(0);
-  }
-  100% {
-    transform: rotateX(360deg) rotateY(360deg);
-  }
-}
