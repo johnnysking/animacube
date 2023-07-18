@@ -23,28 +23,53 @@
       document.addEventListener("DOMContentLoaded", function () {
         const cube = document.querySelector(".cube");
         let isAnimationRunning = true;
-        let animationSpeed = 1;
+
+        let speedFactor = 1;
+        let targetSpeedFactor = speedFactor;
+        let start = null;
+        let progress = 0;
+        const lerpRate = 0.05; // Adjusts the speed of interpolation. Lower values make the transition smoother but slower.
 
         document.addEventListener("click", toggleAnimation);
         document.addEventListener("wheel", handleMouseWheel);
 
-        function toggleAnimation() {
-          if (isAnimationRunning) {
-            cube.style.animationPlayState = "paused";
-          } else {
-            cube.style.animationPlayState = "running";
+        function step(timestamp) {
+          if (!isAnimationRunning) {
+            return;
           }
+
+          speedFactor += (targetSpeedFactor - speedFactor) * lerpRate;
+
+          if (!start) start = timestamp;
+          let elapsed = timestamp - start;
+
+          progress = (elapsed / ((5 / speedFactor) * 1000)) % 1;
+
+          let rotationDegrees = progress * 360;
+
+          cube.style.transform = `rotateX(${rotationDegrees}deg) rotateY(${rotationDegrees}deg)`;
+
+          if (isAnimationRunning) requestAnimationFrame(step);
+        }
+
+        requestAnimationFrame(step);
+
+        function toggleAnimation() {
           isAnimationRunning = !isAnimationRunning;
+          if (isAnimationRunning) {
+            start = null;
+            requestAnimationFrame(step);
+          }
         }
 
         function handleMouseWheel(event) {
-          event.preventDefault();
           const delta = Math.sign(event.deltaY);
-          animationSpeed += delta;
-          if (animationSpeed < 1) {
-            animationSpeed = 1;
+          let scrollSpeed = 0.05;
+          if (delta > 0) {
+            targetSpeedFactor += scrollSpeed;
+          } else {
+            targetSpeedFactor = Math.max(1, targetSpeedFactor - scrollSpeed);
           }
-          cube.style.animationDuration = `${5 / animationSpeed}s`;
         }
       });
     </script>
