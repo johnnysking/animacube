@@ -1,53 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta charset="UTF-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="stylesheet" type="text/css" href="style.css" /> 
-      <title>AnImAcUbe</title>
-      
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>AnImAcUbe</title>
   </head>
-  <body style="background-color: black;">
-      <div class="scene">
-          <div class="cube">
-              <div class="face front"></div>
-              <div class="face1 back"></div>
-              <div class="face2 right"></div>
-              <div class="face3 left"></div>
-              <div class="face4 top"></div>
-              <div class="face5 bottom"></div>
-          </div>
+  <body style="background-color: black">
+    <div class="scene">
+      <div class="cube">
+        <div class="face front"></div>
+        <div class="face1 back"></div>
+        <div class="face2 right"></div>
+        <div class="face3 left"></div>
+        <div class="face4 top"></div>
+        <div class="face5 bottom"></div>
       </div>
+    </div>
 
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cube = document.querySelector('.cube');
-            let isAnimationRunning = true;
-            let animationSpeed = 1;
-  
-            document.addEventListener('click', toggleAnimation);
-            document.addEventListener('wheel', handleMouseWheel);
-  
-            function toggleAnimation() {
-                if (isAnimationRunning) {
-                    cube.style.animationPlayState = 'paused';
-                } else {
-                    cube.style.animationPlayState = 'running';
-                }
-                isAnimationRunning = !isAnimationRunning;
-            }
-  
-            function handleMouseWheel(event) {
-                event.preventDefault();
-                const delta = Math.sign(event.deltaY);
-                animationSpeed += delta;
-                if (animationSpeed < 1) {
-                    animationSpeed = 1;
-                }
-                cube.style.animationDuration = `${5 / animationSpeed}s`;
-            }
-        });
-      </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const cube = document.querySelector(".cube");
+        let isAnimationRunning = true;
+        let animationSpeed = 1;
+
+        document.addEventListener("click", toggleAnimation);
+        document.addEventListener("wheel", handleMouseWheel);
+
+        function toggleAnimation() {
+          if (isAnimationRunning) {
+            cube.style.animationPlayState = "paused";
+          } else {
+            cube.style.animationPlayState = "running";
+          }
+          isAnimationRunning = !isAnimationRunning;
+        }
+
+        function handleMouseWheel(event) {
+          event.preventDefault();
+          const delta = Math.sign(event.deltaY);
+          animationSpeed += delta;
+          if (animationSpeed < 1) {
+            animationSpeed = 1;
+          }
+          cube.style.animationDuration = `${5 / animationSpeed}s`;
+        }
+      });
+    </script>
   </body>
 </html>
